@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DisplayMode {
-    case collectionView
-    case tableView
+enum DisplayMode: String {
+    case collectionView = "collection"
+    case tableView = "table"
 }

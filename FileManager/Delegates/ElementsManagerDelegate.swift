@@ -9,4 +9,6 @@ import Foundation
 
 protocol ElementsManagerDelegate {
     func reloadData()
+    func handleModeChange()
+    func handleDisplayModeChange()
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ElementCollectionViewCell: UICollectionViewCell, TestProtocol {
+class ElementCollectionViewCell: UICollectionViewCell, FileProtocol {
     static let id = "ElementCollectionViewCell"
     
     var elementImageView: UIImageView!
@@ -62,18 +62,22 @@ class ElementCollectionViewCell: UICollectionViewCell, TestProtocol {
     }
 }
 
-protocol TestProtocol {
+protocol FileProtocol: AnyObject {
     var elementImageView: UIImageView! { get }
     var label: UILabel! { get }
     
-    func updateData(element: Element)
+    var backgroundColor: UIColor? { get set }
+    
+    func updateData(element: Element, selected: Bool)
 }
 
-extension TestProtocol {
-    func updateData(element: Element) {
+extension FileProtocol {
+    func updateData(element: Element, selected: Bool) {
         updateImage(element: element)
         
         self.label.text = element.name
+        
+        self.backgroundColor = selected ? .lightGray : .clear
     }
     
     private func updateImage(element: Element) {

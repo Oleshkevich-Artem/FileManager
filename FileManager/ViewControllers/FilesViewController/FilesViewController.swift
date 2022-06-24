@@ -16,58 +16,70 @@ class FilesViewController: UIViewController {
     
     var manager = ElementsManager()
     
-    var displayMode = DisplayMode.tableView
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         manager.delegate = self
-        
-        setUpNavigationBar()
+    
+        updateNavigationButtons()
+        updateDisplayMode()
         
         setUpTableView()
         setUpCollectionView()
+        
     }
     
-    private func setUpNavigationBar() {
-        navigationItem.rightBarButtonItems = [addMenuButton(menu: addMenu()), UIBarButtonItem(customView: addSegmentControl())]
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = .black
-    }
-    
-    private func addMenuButton(menu: UIMenu) -> UIBarButtonItem {
-        let menuButton = UIBarButtonItem(systemItem: .edit, menu: menu)
-        return menuButton
-    }
-    
-    private func addSegmentControl() -> UISegmentedControl {
-        let segmentItemsArray = [UIImage(systemName: "t.square"), UIImage(systemName: "t.circle")]
-        let segmentControl = UISegmentedControl(items: segmentItemsArray as [Any])
-        segmentControl.addTarget(self, action: #selector(switchDisplayMode), for: .valueChanged)
-        return segmentControl
-    }
-    
-    private func addMenu() -> UIMenu {
+    private func setUpNavigationBarViewMode() {
+        
         let menu = UIMenu(title: "Menu", image: UIImage(systemName: "buss.fill"), children: [
-            
             UIAction(title: "New folder", image: UIImage(systemName: "folder"), handler: { _ in self.showCreateFolderAlert() }),
             UIAction(title: "Camera", image: UIImage(systemName: "camera"), handler: { _ in self.uploadCameraPhoto() }),
             UIAction(title: "Upload image", image: UIImage(systemName: "photo"), handler: { _ in self.uploadImage() }),
-            UIAction(title: "Delete", image: UIImage(systemName: "folder.badge.minus"), attributes: .destructive, handler: { _ in print("Delete") })
+            UIAction(title: "Edit", image: UIImage(systemName: "folder.badge.minus"), attributes: .destructive, handler: { _ in self.manager.switchMode(.edit) })
         ])
-        return menu
+        
+        let displayModeButton = UIBarButtonItem(systemItem: .action, primaryAction: UIAction(handler: { _ in self.manager.switchDisplayMode() }))
+        
+        let menuButton = UIBarButtonItem(title: "Menu", image: UIImage(systemName: "square.and.pencil"), primaryAction: nil, menu: menu)
+        
+        navigationItem.rightBarButtonItems = [menuButton, displayModeButton]
+        navigationController?.navigationBar.backgroundColor = .black
+        navigationController?.navigationBar.tintColor = .white
     }
     
-    @objc private func switchDisplayMode() {
-        switch displayMode {
-        case .collectionView:
-            filesCollectionView.isHidden = true
-            filesCollectionView.isHidden = false
-            displayMode = .tableView
+    private func updateDisplayMode() {
+        switch manager.displayMode {
         case .tableView:
             filesCollectionView.isHidden = false
+            foldersTableView.isHidden = true
+            
+        case .collectionView:
             filesCollectionView.isHidden = true
-            displayMode = .collectionView
+            foldersTableView.isHidden = false
+        }
+    }
+    
+    private func setUpNavigationBarEditMode() {
+        let selectButton = UIBarButtonItem(systemItem: .cancel,
+                                           primaryAction: UIAction(handler: { _ in
+            self.manager.switchMode(.view)
+        }))
+        
+        let deleteButton = UIBarButtonItem(systemItem: .trash,
+                                           primaryAction: UIAction(handler: { _ in
+            self.manager.deleteSelectedElements()
+        }))
+        
+        navigationItem.rightBarButtonItems = [selectButton, deleteButton]
+    }
+   
+    private func updateNavigationButtons() {
+        switch manager.mode {
+        case .edit:
+            setUpNavigationBarEditMode()
+            
+        case .view:
+            setUpNavigationBarViewMode()
         }
     }
     
@@ -128,16 +140,24 @@ class FilesViewController: UIViewController {
     func handleCellTap(indexPath: IndexPath) {
         let element = manager.elements[indexPath.row]
         
-        switch element.type {
-        case .folder:
-            navigateToNextFolder(element.path)
+        switch manager.mode {
+        case .edit:
+            manager.selectElement(element)
             
-        case .image:
-            navigateToImageViewController(element.path)
-
+        case .view:
+            handleViewModeCellTap(element: element)
         }
     }
     
+    private func handleViewModeCellTap(element: Element) {
+        switch element.type {
+        case .folder:
+            navigateToNextFolder(element.path)
+        case .image:
+            navigateToImageViewController(element.path)
+        }
+    }
+            
     private func navigateToNextFolder(_ url: URL) {
         guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilesViewController") as? FilesViewController else {
             return
@@ -159,6 +179,15 @@ class FilesViewController: UIViewController {
 }
 
 extension FilesViewController: ElementsManagerDelegate {
+    func handleDisplayModeChange() {
+        updateDisplayMode()
+    }
+    
+    func handleModeChange() {
+        updateNavigationButtons()
+        reloadData()
+    }
+    
     func reloadData() {
         DispatchQueue.main.async {
             self.foldersTableView.reloadData()
@@ -180,21 +209,17 @@ extension FilesViewController: UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        print("canceled")
-        
         picker.dismiss(animated: true)
     }
 }
 
 extension FilesViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        // Get the first item provider from the results
         guard let itemProvider = results.first?.itemProvider,
               itemProvider.canLoadObject(ofClass: UIImage.self) else {
             return
         }
         
-        // Access the UIImage representation for the result
         itemProvider.loadObject(ofClass: UIImage.self) { image, error in
             guard let image = image as? UIImage else {
                 return
@@ -208,7 +233,6 @@ extension FilesViewController: PHPickerViewControllerDelegate {
                 self.manager.createImage(image, name:imageName)
             }
         }
-        
         picker.dismiss(animated: true)
     }
     

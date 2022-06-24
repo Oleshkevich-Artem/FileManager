@@ -7,8 +7,7 @@
 
 import UIKit
 
-class FolderTableViewCell: UITableViewCell, TestProtocol {
-    
+class FolderTableViewCell: UITableViewCell, FileProtocol {
     static let id = "FolderTableViewCell"
     
     var elementImageView: UIImageView!
@@ -29,14 +28,15 @@ class FolderTableViewCell: UITableViewCell, TestProtocol {
         
         createElements()
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        super.setSelected(selected, animated: false)
+        
     }
 
     private func createElements() {
+        self.selectionStyle = .none
+        
         let horizontalStack = UIStackView()
         horizontalStack.axis = .horizontal
         horizontalStack.spacing = 10

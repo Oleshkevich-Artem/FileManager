@@ -7,6 +7,8 @@
 
 import UIKit
 
+import UIKit
+
 extension FilesViewController {
     var collectionCellSize: CGSize {
         let size = 100
@@ -18,11 +20,14 @@ extension FilesViewController {
         filesCollectionView.delegate = self
         filesCollectionView.dataSource = self
         
+        filesCollectionView.allowsMultipleSelection = true
+        
         filesCollectionView.register(ElementCollectionViewCell.self,
                                      forCellWithReuseIdentifier: ElementCollectionViewCell.id)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+       
         handleCellTap(indexPath: indexPath)
     }
 }
@@ -45,8 +50,8 @@ extension FilesViewController: UICollectionViewDataSource {
 
         let element = manager.elements[indexPath.row]
 
-        collectionViewCell.updateData(element: element)
-     
+        collectionViewCell.updateData(element: element, selected: manager.selectedElements.contains(element))
+        
         return collectionViewCell
     }
 }

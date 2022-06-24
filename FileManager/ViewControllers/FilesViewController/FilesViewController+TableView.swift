@@ -12,11 +12,17 @@ extension FilesViewController: UITableViewDelegate {
         foldersTableView.delegate = self
         foldersTableView.dataSource = self
         
+        foldersTableView.allowsMultipleSelection = true
+        
         foldersTableView.register(FolderTableViewCell.classForCoder(),
                                   forCellReuseIdentifier: FolderTableViewCell.id)
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        handleCellTap(indexPath: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         handleCellTap(indexPath: indexPath)
     }
     
@@ -35,7 +41,9 @@ extension FilesViewController: UITableViewDataSource {
         
         switch element.type {
         case .folder, .image:
-            return getDirectoryCell(tableView, element: element)
+            let tableViewCell = getDirectoryCell(tableView, element: element)
+            
+            return tableViewCell
         }
     }
     
@@ -44,7 +52,7 @@ extension FilesViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        tableViewCell.updateData(element: element)
+        tableViewCell.updateData(element: element, selected: manager.selectedElements.contains(element))
         
         return tableViewCell
     }

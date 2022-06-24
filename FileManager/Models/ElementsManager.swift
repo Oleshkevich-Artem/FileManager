@@ -9,6 +9,21 @@ import Foundation
 import UIKit
 
 class ElementsManager {
+    var mode: EditingMode = .view {
+        didSet {
+            delegate?.handleModeChange()
+        }
+    }
+    
+    var displayMode: DisplayMode = .tableView {
+        didSet {
+            delegate?.handleDisplayModeChange()
+        }
+    }
+    
+    private let imagesExtensions = [".jpeg", ".jpg", ".png", ".heic"]
+    
+    var selectedElements = [Element]()
     var elements = [Element]()
     
     var currentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -23,6 +38,28 @@ class ElementsManager {
         reloadFolderContents()
     }
     
+    func switchMode(_ mode: EditingMode) {
+        self.mode = mode
+        
+        switch mode {
+        case .view:
+            self.selectedElements = []
+            
+        case .edit:
+            break
+        }
+    }
+    
+    func switchDisplayMode() {
+        switch self.displayMode {
+        case .collectionView:
+            self.displayMode = .tableView
+        case .tableView:
+            self.displayMode = .collectionView
+      }
+        let displayModeStatus = UserDefaults.
+  }
+
     func createElement(type: ElementType, name: String) {
         switch type {
         case .folder:
@@ -39,7 +76,7 @@ class ElementsManager {
         guard let currentDirectory = currentDirectory else {
             return
         }
-     
+        
         let newFolderPath = currentDirectory.appendingPathComponent(name)
         
         try? FileManager.default.createDirectory(at: newFolderPath,
@@ -63,22 +100,48 @@ class ElementsManager {
     private func reloadFolderContents() {
         guard let currentDirectory = self.currentDirectory,
               let filesUrls = try? FileManager.default.contentsOfDirectory(at: currentDirectory,
-                                                                           includingPropertiesForKeys: nil) else {
-            return
-        }
+                                                                           includingPropertiesForKeys: nil) else { return }
         
         self.elements = filesUrls.map {
             let name = $0.lastPathComponent
-            
-            let type: ElementType = name.contains(".png") || name.contains(".jpeg") ? .image : .folder
-            
+
+            let type: ElementType = imagesExtensions.contains(where: { name.contains($0) })
+                ? .image : .folder
+
             return Element(name: name,
                            path: $0,
                            type: type)
         }.sorted {
             $0.type.sortPriority < $1.type.sortPriority
         }
+
+        delegate?.reloadData()
+    }
+    
+    func selectElement(_ element: Element) {
+        guard mode == .edit else { return }
+        
+        if let index = selectedElements.firstIndex(of: element) {
+            selectedElements.remove(at: index)
+        }
+        else {
+            selectedElements.append(element)
+        }
         
         delegate?.reloadData()
+        
+        print(selectedElements)
+    }
+    
+    func deleteSelectedElements() {
+        guard mode == .edit else { return }
+        
+        for element in selectedElements {
+            try? FileManager.default.removeItem(at: element.path)
+        }
+        
+        switchMode(.view)
+        
+        reloadFolderContents()
     }
 }
