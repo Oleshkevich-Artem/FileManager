@@ -33,7 +33,7 @@ class ElementCollectionViewCell: UICollectionViewCell, FileProtocol {
         let verticalStack = UIStackView()
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
-        verticalStack.distribution = .fillProportionally
+        verticalStack.distribution = .fillEqually
         verticalStack.spacing = 5
         
         addSubview(verticalStack)

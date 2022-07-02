@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 extension FilesViewController {
     var collectionCellSize: CGSize {
         let size = 100

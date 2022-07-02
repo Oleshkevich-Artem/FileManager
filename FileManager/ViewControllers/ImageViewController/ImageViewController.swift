@@ -30,9 +30,3 @@ class ImageViewController: UIViewController {
         }
     }
 }
-
-extension ImageViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
-    }
-}

@@ -50,16 +50,10 @@ class ElementsManager {
         }
     }
     
-    func switchDisplayMode() {
-        switch self.displayMode {
-        case .collectionView:
-            self.displayMode = .tableView
-        case .tableView:
-            self.displayMode = .collectionView
-      }
-        let displayModeStatus = UserDefaults.
-  }
-
+    func setDisplayModeSettings(_ displayMode: DisplayMode) {
+        self.displayMode = displayMode
+    }
+    
     func createElement(type: ElementType, name: String) {
         switch type {
         case .folder:

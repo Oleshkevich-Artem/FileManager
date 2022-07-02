@@ -8,6 +8,8 @@
 import Foundation
 
 enum DisplayMode: String {
-    case collectionView = "collection"
-    case tableView = "table"
+    static let key = "DisplayModeKey"
+    
+    case collectionView
+    case tableView
 }
