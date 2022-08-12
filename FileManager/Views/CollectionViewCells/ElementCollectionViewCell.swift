@@ -47,6 +47,7 @@ class ElementCollectionViewCell: UICollectionViewCell, FileProtocol {
         ])
         
         let imageView = UIImageView()
+        imageView.tintColor = .red
         self.elementImageView = imageView
         verticalStack.addArrangedSubview(imageView)
         

@@ -52,6 +52,7 @@ class FolderTableViewCell: UITableViewCell, FileProtocol {
         ])
         
         let imageView = UIImageView()
+        imageView.tintColor = .red
         self.elementImageView = imageView
         horizontalStack.addArrangedSubview(imageView)
         

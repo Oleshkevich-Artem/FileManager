@@ -95,17 +95,15 @@
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JWn-84-rPX">
                                         <rect key="frame" x="0.0" y="0.0" width="394" height="788"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="394" id="Ibe-kR-CAK"/>
-                                            <constraint firstAttribute="height" constant="788" id="NIA-yo-dWE"/>
-                                        </constraints>
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="JWn-84-rPX" firstAttribute="trailing" secondItem="iuh-Mh-WTB" secondAttribute="trailing" id="6yf-Iw-aLA"/>
-                                    <constraint firstItem="JWn-84-rPX" firstAttribute="leading" secondItem="iuh-Mh-WTB" secondAttribute="leading" id="RKJ-BY-Y9D"/>
-                                    <constraint firstItem="JWn-84-rPX" firstAttribute="bottom" secondItem="iuh-Mh-WTB" secondAttribute="bottom" id="fid-mL-6lJ"/>
-                                    <constraint firstItem="JWn-84-rPX" firstAttribute="top" secondItem="iuh-Mh-WTB" secondAttribute="top" id="w4l-oQ-bNq"/>
+                                    <constraint firstItem="JWn-84-rPX" firstAttribute="top" secondItem="f7c-32-K9z" secondAttribute="top" id="1Fc-ZK-z8a"/>
+                                    <constraint firstAttribute="trailing" secondItem="JWn-84-rPX" secondAttribute="trailing" id="1vh-fk-WUa"/>
+                                    <constraint firstItem="JWn-84-rPX" firstAttribute="leading" secondItem="f7c-32-K9z" secondAttribute="leading" id="9Do-uP-IIn"/>
+                                    <constraint firstAttribute="bottom" secondItem="JWn-84-rPX" secondAttribute="bottom" id="GEo-XR-ycL"/>
+                                    <constraint firstItem="JWn-84-rPX" firstAttribute="height" secondItem="f7c-32-K9z" secondAttribute="height" id="TGA-YA-pVh"/>
+                                    <constraint firstItem="JWn-84-rPX" firstAttribute="width" secondItem="f7c-32-K9z" secondAttribute="width" id="ktz-yY-kiM"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="iuh-Mh-WTB"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="OUd-Rq-0Jv"/>

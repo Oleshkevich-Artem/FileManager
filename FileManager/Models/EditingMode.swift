@@ -5,7 +5,7 @@
 //  Created by Oleshkevich Artem on 18.06.22.
 //
 
-import Foundation
+import UIKit
 
 enum EditingMode {
     case view

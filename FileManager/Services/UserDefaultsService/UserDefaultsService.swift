@@ -5,7 +5,7 @@
 //  Created by Oleshkevich Artem on 25.06.22.
 //
 
-import Foundation
+import UIKit
 
 class UserDefaultsService {
     static let shared = UserDefaultsService()

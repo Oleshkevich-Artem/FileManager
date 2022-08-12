@@ -11,6 +11,8 @@
 		041A4776286F437E003C1C07 /* ImageViewController + UIScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A4775286F437E003C1C07 /* ImageViewController + UIScrollViewDelegate.swift */; };
 		041A4778286F43E6003C1C07 /* FilesViewController + UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A4777286F43E6003C1C07 /* FilesViewController + UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift */; };
 		041A477A286F4424003C1C07 /* FilesViewController + PHPickerViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A4779286F4424003C1C07 /* FilesViewController + PHPickerViewControllerDelegate.swift */; };
+		041A477C287046FC003C1C07 /* FileViewController + Manipulations KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A477B287046FC003C1C07 /* FileViewController + Manipulations KeyChainService.swift */; };
+		041A478028708B21003C1C07 /* LocalNotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A477F28708B21003C1C07 /* LocalNotificationsService.swift */; };
 		042D4713285CC1C600C01D7F /* DisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042D4712285CC1C600C01D7F /* DisplayMode.swift */; };
 		043658D2284F8ADD00A7475B /* ElementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043658D1284F8ADD00A7475B /* ElementCollectionViewCell.swift */; };
 		043658D6284F8D7600A7475B /* FilesViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043658D5284F8D7600A7475B /* FilesViewController+CollectionView.swift */; };
@@ -37,6 +39,8 @@
 		041A4775286F437E003C1C07 /* ImageViewController + UIScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageViewController + UIScrollViewDelegate.swift"; sourceTree = "<group>"; };
 		041A4777286F43E6003C1C07 /* FilesViewController + UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FilesViewController + UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift"; sourceTree = "<group>"; };
 		041A4779286F4424003C1C07 /* FilesViewController + PHPickerViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FilesViewController + PHPickerViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		041A477B287046FC003C1C07 /* FileViewController + Manipulations KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileViewController + Manipulations KeyChainService.swift"; sourceTree = "<group>"; };
+		041A477F28708B21003C1C07 /* LocalNotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationsService.swift; sourceTree = "<group>"; };
 		042D4712285CC1C600C01D7F /* DisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMode.swift; sourceTree = "<group>"; };
 		043658D1284F8ADD00A7475B /* ElementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementCollectionViewCell.swift; sourceTree = "<group>"; };
 		043658D5284F8D7600A7475B /* FilesViewController+CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FilesViewController+CollectionView.swift"; sourceTree = "<group>"; };
@@ -82,6 +86,7 @@
 				041A4772286F4289003C1C07 /* FileViewController + FileManagerDelegate.swift */,
 				041A4777286F43E6003C1C07 /* FilesViewController + UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift */,
 				041A4779286F4424003C1C07 /* FilesViewController + PHPickerViewControllerDelegate.swift */,
+				041A477B287046FC003C1C07 /* FileViewController + Manipulations KeyChainService.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -92,6 +97,14 @@
 				041A4775286F437E003C1C07 /* ImageViewController + UIScrollViewDelegate.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		041A478128708B28003C1C07 /* LocalNotificationsSevice */ = {
+			isa = PBXGroup;
+			children = (
+				041A477F28708B21003C1C07 /* LocalNotificationsService.swift */,
+			);
+			path = LocalNotificationsSevice;
 			sourceTree = "<group>";
 		};
 		043658CF284F8A6F00A7475B /* CollectionViewCells */ = {
@@ -150,6 +163,7 @@
 		04A6296128673AFB00CEB4F9 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				041A478128708B28003C1C07 /* LocalNotificationsSevice */,
 				04A6296528673DD300CEB4F9 /* UserDefaultsService */,
 				04A6296228673B0500CEB4F9 /* KeychainService */,
 			);
@@ -364,6 +378,8 @@
 				041A4776286F437E003C1C07 /* ImageViewController + UIScrollViewDelegate.swift in Sources */,
 				04C809F8284AA45D00AF85EE /* ElementsManager.swift in Sources */,
 				042D4713285CC1C600C01D7F /* DisplayMode.swift in Sources */,
+				041A477C287046FC003C1C07 /* FileViewController + Manipulations KeyChainService.swift in Sources */,
+				041A478028708B21003C1C07 /* LocalNotificationsService.swift in Sources */,
 				043658D2284F8ADD00A7475B /* ElementCollectionViewCell.swift in Sources */,
 				043658D8284F8DC900A7475B /* FilesViewController+TableView.swift in Sources */,
 				047B406C2848C374004CF90A /* AppDelegate.swift in Sources */,

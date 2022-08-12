@@ -5,7 +5,7 @@
 //  Created by Oleshkevich Artem on 17.06.22.
 //
 
-import Foundation
+import UIKit
 
 enum DisplayMode: String {
     static let key = "DisplayModeKey"

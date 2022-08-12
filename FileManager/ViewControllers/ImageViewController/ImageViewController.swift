@@ -9,14 +9,15 @@ import UIKit
 
 class ImageViewController: UIViewController {
     
-    var imageURL: URL?
+    var imageURL: URL!
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpScrollView()
-        setUpImage()
+        setUpImage(imageURL)
     }
     private func setUpScrollView() {
         scrollView.delegate = self
@@ -24,9 +25,10 @@ class ImageViewController: UIViewController {
         scrollView.showsHorizontalScrollIndicator = false
     }
     
-    private func setUpImage() {
-        if let imageURL = imageURL {
-            imageView.image = UIImage.init(contentsOfFile: imageURL.path)
+    func setUpImage(_ url: URL) {
+        guard let data = try? Data(contentsOf: imageURL) else {
+            return
         }
+        self.imageView.image = UIImage(data: data)
     }
 }

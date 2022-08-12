@@ -7,16 +7,19 @@
 
 import PhotosUI
 import UIKit
+import UserNotifications
 
 class FilesViewController: UIViewController {
-    
     
     @IBOutlet weak var filesCollectionView: UICollectionView!
     @IBOutlet weak var foldersTableView: UITableView!
     
     var manager = ElementsManager()
     
+    var verificationStatus: Bool = false
+    
     override func viewWillAppear(_ animated: Bool) {
+        checkVerificationStatus()
         setUpDisplayMode()
     }
     
@@ -24,15 +27,20 @@ class FilesViewController: UIViewController {
         super.viewDidLoad()
         manager.delegate = self
         updateNavigationButtons()
+        enableNotifications()
    
         setUpTableView()
         setUpCollectionView()
     }
     
+    // MARK: - Display mode
+    
     private func setUpDisplayMode() {
         let savedDisplayMode = UserDefaultsService.shared.getDisplayMode(key: DisplayMode.key)
         self.manager.displayMode = savedDisplayMode == DisplayMode.tableView.rawValue ? .tableView : .collectionView
     }
+    
+    // MARK: - Navigation Bar, UIMenu, Manipulations
     
     private func setUpNavigationBarViewMode() {
         
@@ -53,40 +61,40 @@ class FilesViewController: UIViewController {
             ])
         
         let menu = UIMenu(title: "Menu",
-                          image: UIImage(systemName: "buss.fill"),
+                          image: UIImage(systemName: ""),
                           children: [
             UIAction(title: "New folder",
                      image: UIImage(systemName: "folder"),
-                     handler: { _ in self.showCreateFolderAlert() }),
+                     handler: { [weak self] _ in self?.showCreateFolderAlert() }),
             UIAction(title: "Camera",
                      image: UIImage(systemName: "camera"),
-                     handler: { _ in self.uploadCameraPhoto() }),
+                     handler: { [weak self] _ in self?.uploadCameraPhoto() }),
             UIAction(title: "Upload image",
                      image: UIImage(systemName: "photo"),
-                     handler: { _ in self.uploadImage() }),
+                     handler: { [weak self] _ in self?.uploadImage() }),
             UIAction(title: "Edit",
                      image: UIImage(systemName: "folder.badge.minus"),
                      attributes: .destructive,
-                     handler: { _ in self.manager.switchMode(.edit) }),
+                     handler: { [weak self] _ in self?.manager.switchMode(.edit) }),
             submenu
         ])
         
-        let menuButton = UIBarButtonItem(title: "Menu", image: UIImage(systemName: "square.and.pencil"), primaryAction: nil, menu: menu)
+        let menuButton = UIBarButtonItem(title: "Menu", image: UIImage(systemName: "text.justify"), primaryAction: nil, menu: menu)
         
-        navigationItem.rightBarButtonItem = menuButton
+        navigationItem.rightBarButtonItems = [menuButton]
         navigationController?.navigationBar.backgroundColor = .black
         navigationController?.navigationBar.tintColor = .white
     }
     
     private func setUpNavigationBarEditMode() {
         let selectButton = UIBarButtonItem(systemItem: .cancel,
-                                           primaryAction: UIAction(handler: { _ in
-            self.manager.switchMode(.view)
+                                           primaryAction: UIAction(handler: { [weak self] _ in
+            self?.manager.switchMode(.view)
         }))
         
         let deleteButton = UIBarButtonItem(systemItem: .trash,
-                                           primaryAction: UIAction(handler: { _ in
-            self.manager.deleteSelectedElements()
+                                           primaryAction: UIAction(handler: { [weak self] _ in
+            self?.manager.deleteSelectedElements()
         }))
         
         navigationItem.rightBarButtonItems = [selectButton, deleteButton]
@@ -101,7 +109,7 @@ class FilesViewController: UIViewController {
             setUpNavigationBarViewMode()
         }
     }
-    
+        
     private func showCreateFolderAlert() {
         let alertController = UIAlertController(title: "New Folder",
                                                 message: nil,
@@ -113,15 +121,15 @@ class FilesViewController: UIViewController {
         
         let addAction = UIAlertAction(title: "Add",
                                       style: .default,
-                                      handler: { _ in
+                                      handler: { [weak self] _ in
             guard let folderName = alertController.textFields?.first?.text,
                 !folderName.isEmpty else {
-                self.showCreateFolderAlert()
+                self?.showCreateFolderAlert()
                 
                 return
             }
             
-            self.manager.createElement(type: .folder, name: folderName)
+            self?.manager.createElement(type: .folder, name: folderName)
         })
         
         let cancelAction = UIAlertAction(title: "Cancel",
@@ -180,7 +188,7 @@ class FilesViewController: UIViewController {
         guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilesViewController") as? FilesViewController else {
             return
         }
-        
+        viewController.verificationStatus = self.verificationStatus
         viewController.manager.currentDirectory = url
         
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -194,5 +202,10 @@ class FilesViewController: UIViewController {
         
         self.navigationController?.pushViewController(imageViewController, animated: true)
     }
+    
+    // MARK: - LocalNotificationService manipulations
+    
+    private func enableNotifications() {
+        LocalNotificationsService.shared.requestNotificationsPermissions()
+    }
 }
-
