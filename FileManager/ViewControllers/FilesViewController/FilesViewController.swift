@@ -80,7 +80,8 @@ class FilesViewController: UIViewController {
         ])
         
         let menuButton = UIBarButtonItem(title: "Menu", image: UIImage(systemName: "text.justify"), primaryAction: nil, menu: menu)
-        
+        navigationItem.title = "File Manager"
+        navigationItem.backButtonDisplayMode = .generic
         navigationItem.rightBarButtonItems = [menuButton]
         navigationController?.navigationBar.backgroundColor = .black
         navigationController?.navigationBar.tintColor = .white
