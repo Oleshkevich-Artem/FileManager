@@ -27,7 +27,6 @@ class FilesViewController: UIViewController {
         super.viewDidLoad()
         manager.delegate = self
         updateNavigationButtons()
-        enableNotifications()
    
         setUpTableView()
         setUpCollectionView()
@@ -202,11 +201,5 @@ class FilesViewController: UIViewController {
         imageViewController.imageURL = url
         
         self.navigationController?.pushViewController(imageViewController, animated: true)
-    }
-    
-    // MARK: - LocalNotificationService manipulations
-    
-    private func enableNotifications() {
-        LocalNotificationsService.shared.requestNotificationsPermissions()
     }
 }

@@ -13,37 +13,36 @@ class LocalNotificationsService {
     
     let notificationCenter = UNUserNotificationCenter.current()
     
-    private init() {}
+    private init() { }
     
     func requestNotificationsPermissions() {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
-                self.sendLocalNotificationEveryday()
+                self.sendLocalEverydayNotification()
             }
         }
     }
-        
-    func sendLocalNotificationAfterClosingApp() {
-        let interval = 10
+
+    func sendLocalAfterClosingNotification() {
+        let interval = 60
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(interval),
                                                         repeats: true)
         
-        createLocalNotification(title: "Bye!", body: "See your latter!", trigger: trigger, id: "afterClosingLocalNotificationID")
+        createNotification(title: "Bye!", body: "See you later!", trigger: trigger, id: "afterClosingNotificationID")
     }
     
-    private func sendLocalNotificationEveryday() {
+    private func sendLocalEverydayNotification() {
         var dateComponents = DateComponents()
-        dateComponents.hour = 11
-        dateComponents.minute = 26
+        dateComponents.hour = 20
     
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents,
                                                     repeats: true)
         
-        createLocalNotification(title: "Hi!", body: "Don't forget about as!", trigger: trigger, id: "EverydayNotificationID")
+        createNotification(title: "Hello!", body: "Don't forget to add new files!", trigger: trigger, id: "EverydayNotificationID")
     }
     
-    private func createLocalNotification(title: String, body: String, trigger: UNNotificationTrigger, id: String) {
+    private func createNotification(title: String, body: String, trigger: UNNotificationTrigger, id: String) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
