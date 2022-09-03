@@ -15,53 +15,47 @@ class LocalNotificationsService {
     
     private init() {}
     
-    
-    
     func requestNotificationsPermissions() {
-        
-        notificationCenter
-            .requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-                
-                guard granted else { return }
-                self.notificationCenter.getNotificationSettings { (settings) in
-                    print(settings)
-                    guard settings.authorizationStatus == .authorized else { return }
-                }
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                self.sendLocalNotificationEveryday()
             }
-        self.sendFarewellNotification()
-        self.sendRemindingNotification()
+        }
+    }
+        
+    func sendLocalNotificationAfterClosingApp() {
+        let interval = 10
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(interval),
+                                                        repeats: true)
+        
+        createLocalNotification(title: "Bye!", body: "See your latter!", trigger: trigger, id: "afterClosingLocalNotificationID")
     }
     
-    private func sendFarewellNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Bye!"
-        content.body = "See you later \u{1F601}"
+    private func sendLocalNotificationEveryday() {
+        var dateComponents = DateComponents()
+        dateComponents.hour = 11
+        dateComponents.minute = 26
+    
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents,
+                                                    repeats: true)
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 30,
-                                                        repeats: false)
-        
-        let request = UNNotificationRequest(identifier: "Farewell notification",
-                                            content: content,
-                                            trigger: trigger)
-        
-        notificationCenter.add(request, withCompletionHandler: { (error) in
-            print(error?.localizedDescription)
-        })
+        createLocalNotification(title: "Hi!", body: "Don't forget about as!", trigger: trigger, id: "EverydayNotificationID")
     }
     
-    private func sendRemindingNotification() {
+    private func createLocalNotification(title: String, body: String, trigger: UNNotificationTrigger, id: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Hey!"
-        content.body = "You have not come in for a long time \u{1F622} "
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: DateComponents(hour: 20 , minute: 0), repeats: true)
-        
-        let request = UNNotificationRequest(identifier: "Reminding notification",
+        content.title = title
+        content.body = body
+
+        let request = UNNotificationRequest(identifier: id,
                                             content: content,
                                             trigger: trigger)
-        
-        notificationCenter.add(request, withCompletionHandler: { (error) in
-            print(error?.localizedDescription)
-        })
+
+        notificationCenter.add(request) { error in
+            if error != nil {
+              print("Error")
+            }
+        }
     }
 }

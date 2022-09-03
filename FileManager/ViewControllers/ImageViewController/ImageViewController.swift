@@ -13,12 +13,14 @@ class ImageViewController: UIViewController {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpScrollView()
         setUpImage(imageURL)
     }
+    
     private func setUpScrollView() {
         scrollView.delegate = self
         scrollView.showsVerticalScrollIndicator = false
