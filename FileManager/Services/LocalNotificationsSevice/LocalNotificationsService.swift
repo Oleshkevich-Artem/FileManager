@@ -27,7 +27,7 @@ class LocalNotificationsService {
     func sendLocalAfterClosingNotification() {
         let interval = 60
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(interval),
-                                                        repeats: true)
+                                                        repeats: false)
         
         createNotification(title: "Bye!", body: "See you later!", trigger: trigger, id: "afterClosingNotificationID")
     }
